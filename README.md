@@ -1,2 +1,2 @@
 # Code
- CP solutions
+Solutions to some CP problems
