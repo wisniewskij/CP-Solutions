@@ -15,10 +15,9 @@ using namespace std;
  
 struct node {
     ll value;
-    int name;
     int x, y;
     node *left, *right;
-    node(ll v, int x, int y, int name) : value(v), x(x), y(y), name(name) {
+    node(ll v, int x, int y) : value(v), x(x), y(y){
         left = right = nullptr;
     }
 };
@@ -28,13 +27,13 @@ void setq(int a, ll val, node *k, node *o){
     else{
         int mid=(k->x+k->y)/2;
         if(a<=mid){
-            if(!k->left) k->left=new node(0, k->x, mid, k->name*2); 
+            if(!k->left) k->left=new node(0, k->x, mid); 
             setq(a, val, k->left, (o&&o->left?o->left:nullptr));
         }
         else if(o) k->left=o->left;
 
         if(a>mid){
-            if(!k->right) k->right=new node(0, mid+1, k->y, k->name*2+1); 
+            if(!k->right) k->right=new node(0, mid+1, k->y+1); 
             setq(a, val, k->right, (o&&o->right?o->right:nullptr));
         }
         else if(o) k->right=o->right;
@@ -59,7 +58,7 @@ int main(){
     cin>>n>>q;
     for(m=1; m<n; m<<=1);
     vector<int> idx={0, 0};
-    vector<node*> roots = {new node(0, 0, m-1, 1)};
+    vector<node*> roots = {new node(0, 0, m-1)};
     for(int i=0;i<m;i++){
         if(i<n){
             ll tmp;
@@ -75,7 +74,7 @@ int main(){
         if(x==1){
             int a, x;
             cin>>a>>x;
-            roots.push_back(new node(0, 0, m-1, 1));
+            roots.push_back(new node(0, 0, m-1));
             setq(a-1, x, roots.back(), roots[idx[k]]);
             idx[k]=roots.size()-1;
         }
