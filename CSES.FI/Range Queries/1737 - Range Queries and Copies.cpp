@@ -16,9 +16,10 @@ using namespace std;
 struct node
 {
     ll value;
+    int name;
     int x, y;
     node *left, *right;
-    node(ll v, int x, int y) : value(v), x(x), y(y)
+    node(ll v, int x, int y, int name) : value(v), x(x), y(y), name(name)
     {
         left = right = nullptr;
     }
@@ -34,7 +35,7 @@ void setq(int a, ll val, node *k, node *o)
         if (a <= mid)
         {
             if (!k->left)
-                k->left = new node(0, k->x, mid);
+                k->left = new node(0, k->x, mid, k->name * 2);
             setq(a, val, k->left, (o && o->left ? o->left : nullptr));
         }
         else if (o)
@@ -43,7 +44,7 @@ void setq(int a, ll val, node *k, node *o)
         if (a > mid)
         {
             if (!k->right)
-                k->right = new node(0, mid + 1, k->y + 1);
+                k->right = new node(0, mid + 1, k->y, k->name * 2 + 1);
             setq(a, val, k->right, (o && o->right ? o->right : nullptr));
         }
         else if (o)
@@ -75,7 +76,7 @@ int main()
     for (m = 1; m < n; m <<= 1)
         ;
     vector<int> idx = {0, 0};
-    vector<node *> roots = {new node(0, 0, m - 1)};
+    vector<node *> roots = {new node(0, 0, m - 1, 1)};
     for (int i = 0; i < m; i++)
     {
         if (i < n)
@@ -96,7 +97,7 @@ int main()
         {
             int a, x;
             cin >> a >> x;
-            roots.push_back(new node(0, 0, m - 1));
+            roots.push_back(new node(0, 0, m - 1, 1));
             setq(a - 1, x, roots.back(), roots[idx[k]]);
             idx[k] = roots.size() - 1;
         }
@@ -107,6 +108,8 @@ int main()
             cout << query(a - 1, b - 1, roots[idx[k]]) << ndl;
         }
         else
+        {
             idx.push_back(idx[k]);
+        }
     }
 }
