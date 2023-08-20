@@ -30,17 +30,15 @@ int main(){
     vector<int> depth(n+1);
 
     queue<pair<int,int>> que;
-    vector<bool> vis(n+1);
     que.push({1,0});
 
     while(!que.empty()){
         auto [v, p] = que.front();
         que.pop();
         for(auto x:G[v]){
-            if(x!=p&&!vis[x]){
+            if(x!=p){
                 que.push({x,v});
                 up[x][0]=v;
-                vis[x]=1;
                 depth[x]=depth[v]+1;
             }
         }
@@ -57,14 +55,14 @@ int main(){
 
         if(depth[a]>depth[b]) swap(a,b);
 
-        int sum, c;
-        sum=c=depth[b]-depth[a];
+        int sum = depth[a]+depth[b];
+        int c = depth[b]-depth[a];
 
         for(int i=0;c>0;i++, c>>=1)
             if(c&1) b=up[b][i];
 
         if(a==b){
-            cout<<sum<<ndl;
+            cout<<sum-2*depth[a]<<ndl;
             continue;
         }
 
@@ -72,10 +70,10 @@ int main(){
             while(up[a][i]!=up[b][i]){
                 a=up[a][i];
                 b=up[b][i];
-                sum+=1<<(i+1);
             }  
 
-        cout<<sum+2<<ndl;
+        a=up[a][0];
+        cout<<sum-2*depth[a]<<ndl;
     }
 
 }
